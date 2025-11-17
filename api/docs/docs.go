@@ -47,6 +47,103 @@ const docTemplate = `{
                 }
             }
         },
+        "/astra/{date}/{building}": {
+            "get": {
+                "description": "\"Returns AstraEvent based on the input date and building name\"",
+                "produces": [
+                    "application/json"
+                ],
+                "operationId": "AstraEventsByBuilding",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "date (ISO format) to retrieve astra events",
+                        "name": "date",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "building abbreviation of event locations",
+                        "name": "building",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All sections with meetings on the specified date in the specified building",
+                        "schema": {
+                            "$ref": "#/definitions/schema.APIResponse-schema_SingleBuildingEvents-schema_AstraEvent"
+                        }
+                    },
+                    "404": {
+                        "description": "A string describing the error",
+                        "schema": {
+                            "$ref": "#/definitions/schema.APIResponse-string"
+                        }
+                    },
+                    "500": {
+                        "description": "A string describing the error",
+                        "schema": {
+                            "$ref": "#/definitions/schema.APIResponse-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/astra/{date}/{building}/{room}": {
+            "get": {
+                "description": "\"Returns AstraEvent based on the input date building name and room number\"",
+                "produces": [
+                    "application/json"
+                ],
+                "operationId": "AstraEventsByBuildingandRoom",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "date (ISO format) to retrieve astra events",
+                        "name": "date",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "building abbreviation of event locations",
+                        "name": "building",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "room number for event",
+                        "name": "room",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All sections with meetings on the specified date in the specified building",
+                        "schema": {
+                            "$ref": "#/definitions/schema.APIResponse-schema_SingleBuildingEvents-schema_AstraEvent"
+                        }
+                    },
+                    "404": {
+                        "description": "A string describing the error",
+                        "schema": {
+                            "$ref": "#/definitions/schema.APIResponse-string"
+                        }
+                    },
+                    "500": {
+                        "description": "A string describing the error",
+                        "schema": {
+                            "$ref": "#/definitions/schema.APIResponse-string"
+                        }
+                    }
+                }
+            }
+        },
         "/autocomplete/dag": {
             "get": {
                 "description": "\"Returns an aggregation of courses for use in generating autocomplete DAGs\"",
@@ -1386,45 +1483,6 @@ const docTemplate = `{
                         "description": "A string describing the error",
                         "schema": {
                             "$ref": "#/definitions/schema.APIResponse-string"
-                        }
-                    },
-                    "500": {
-                        "description": "A string describing the error",
-                        "schema": {
-                            "$ref": "#/definitions/schema.APIResponse-string"
-                        }
-                    }
-                }
-            }
-        },
-        "/professor/sections/trends": {
-            "get": {
-                "description": "\"Returns all of the given professor's sections. Specialized high-speed convenience endpoint for UTD Trends internal use; limited query flexibility.\"",
-                "produces": [
-                    "application/json"
-                ],
-                "operationId": "trendsProfessorSectionSearch",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "The professor's first name",
-                        "name": "first_name",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "The professor's last name",
-                        "name": "last_name",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "A list of Sections",
-                        "schema": {
-                            "$ref": "#/definitions/schema.APIResponse-array_schema_Section"
                         }
                     },
                     "500": {
@@ -2799,6 +2857,20 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/schema.Section"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "schema.APIResponse-schema_SingleBuildingEvents-schema_AstraEvent": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/schema.SingleBuildingEvents-schema_AstraEvent"
                 },
                 "message": {
                     "type": "string"
