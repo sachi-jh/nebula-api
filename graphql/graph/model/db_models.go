@@ -81,6 +81,57 @@ func TransformCourse(dbCourse *DBCourse) *Course {
 	}
 }
 
+type DBOffice struct {
+	Building string `bson:"building"`
+	MapURI   string `bson:"map_uri"`
+	Room     string `bson:"room"`
+}
+
+func transformOffice(dbOffice *DBOffice) *Office {
+	if dbOffice == nil {
+		return nil
+	}
+	return &Office{
+		dbOffice.Building,
+		dbOffice.MapURI,
+		dbOffice.Room,
+	}
+}
+
+type DBProfessor struct {
+	ID           string				  `bson:"_id"`
+	Email        string               `bson:"email"`
+	FirstName    string               `bson:"first_name"`
+	LastName     string               `bson:"last_name"`
+	ImageURI     string               `bson:"image_uri"`
+	ProfileURI   string               `bson:"profile_uri"`
+	PhoneNumber  string               `bson:"phone_number"`
+	Office       *DBOffice            `bson:"office"`
+	OfficeHours  any                  `bson:"office_hours"`
+	Sections     []string 			  `bson:"sections"`
+	Titles       []string             `bson:"titles"`
+}
+
+func TransformProfessor(dbProfessor *DBProfessor) *Professor {
+	if dbProfessor == nil {
+		return nil
+	}
+
+	return &Professor{
+		dbProfessor.ID,
+		dbProfessor.Email,
+		dbProfessor.FirstName,
+		dbProfessor.LastName,
+		dbProfessor.ImageURI,
+		dbProfessor.ProfileURI,
+		dbProfessor.PhoneNumber,
+		transformOffice(dbProfessor.Office),
+		dbProfessor.OfficeHours,
+		dbProfessor.Sections,
+		dbProfessor.Titles,
+	}
+}
+
 // DBEvent represents the database model for an event.
 type DBEvent struct {
 	ID                 string    `bson:"_id"`

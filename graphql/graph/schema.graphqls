@@ -64,6 +64,34 @@ input CourseFilter {
 	catalog_year: String @goTag(key: "bson", value: "catalog_year,omitempty")
 }
 
+type Office {
+	building: String!
+	map_uri: String!
+	room: String!
+}
+
+type Professor {
+	_id: ID!
+	first_name: String!
+	last_name: String!
+	titles: [String!]!
+	email: String!
+	phone_number: String!
+	office: Office!
+	profile_uri: String!
+	image_uri: String!
+	office_hours: Any
+	sections: [ID!]!
+}
+
+input ProfessorFilter {
+	email: String @goTag(key: "bson", value:"email,omitempty")
+	first_name: String @goTag(key: "bson", value: "first_name,omitempty")
+	last_name: String @goTag(key: "bson", value: "last_name,omitempty")
+	titles: String @goTag(key: "bson", value: "titles,omitempty")
+	office_building: String @goTag(key: "bson", value: "office.building,omitempty")
+}
+
 # Building rooms don't need seprate of concerns
 type Room {
 	room: String! @goTag(key: "bson", value: "room")
